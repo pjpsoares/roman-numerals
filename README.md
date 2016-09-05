@@ -6,6 +6,11 @@ Utility class that will convert from int to roman numeral and vice versa
 npm i
 ```
 
+## Unit tests
+```sh
+npm test
+```
+
 ## Linting
 ```sh
 npm run lint
