@@ -2,10 +2,15 @@ const MIN_RANGE = 1;
 const MAX_RANGE = 3999;
 
 const ROMAN_1 = 'I';
+const ROMAN_5 = 'V';
 
 function fromNumberToRoman(value) {
-  if (value < 4) {
+  if (value <= 3) {
     return ROMAN_1.repeat(value);
+  } else if (value === 4 ) {
+    return ROMAN_1 + ROMAN_5;
+  } else if (value <= 8){
+    return ROMAN_5 + fromNumberToRoman(value - 5);
   }
 }
 
