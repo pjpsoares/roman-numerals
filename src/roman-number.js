@@ -12,7 +12,6 @@ const NUMBER_TO_ROMAN = {
 };
 const ROMAN_TO_DECIMAL = reverseMap(NUMBER_TO_ROMAN);
 const DECIMAL_NUMBERS = [1, 5, 10, 50, 100, 500, 1000];
-const SUBTRACTABLE_ROMANS = ['I', 'X', 'C'];
 
 function reverseMap(map) {
   var reversedMap = {};
@@ -70,8 +69,34 @@ function fromNumberToRoman(value) {
   return result;
 }
 
-function assertIsRomanSubtractable(roman) {
-  if (SUBTRACTABLE_ROMANS.indexOf(roman) === -1) {
+function assertIsSameRomanValid(decimal, previousAction) {
+  // We can only have one five
+  if (String(decimal).charAt(0) === '5') {
+    invalidValueError();
+  }
+  // We can only have 3 of the same value for 1/10/100/1000
+  if (previousAction === 3 * decimal) {
+    invalidValueError();
+  }
+}
+
+function assertIsRomanSubtractable(decimal, max, previousAction, previousSubtractions) {
+  // We can't subtract fives
+  if (String(decimal).charAt(0) === '5') {
+    invalidValueError();
+  }
+
+  // It's a subtract action so the value must be the maximum/10 or maximum/5
+  if (decimal * 10 !== max && decimal * 5 !== max) {
+    invalidValueError();
+  }
+
+  // We can only subtract one value
+  if (previousAction < 1) {
+    invalidValueError();
+  }
+
+  if (previousSubtractions.indexOf(decimal) > -1) {
     invalidValueError();
   }
 }
@@ -91,45 +116,21 @@ function fromRomanToNumber(value) {
       invalidValueError();
     }
 
-    if (decimal >= max) {
-      max = decimal;
-
+    max = Math.max(decimal, max);
+    if (decimal < max) {
+      assertIsRomanSubtractable(decimal, max, previousAction, previousSubtractions);
+      result -= decimal;
+      previousAction = decimal * -1;
+      previousSubtractions.push(decimal);
+    } else {
       if (previousValue === decimal) {
-        // We can only have one five
-        if (String(decimal).charAt(0) === '5') {
-          invalidValueError();
-        }
-        // We can only have 3 of the same value for 1/10/100/1000
-        if (previousAction === 3 * decimal) {
-          invalidValueError();
-        }
-
+        assertIsSameRomanValid(decimal, previousAction);
         previousAction += decimal;
       } else {
         previousAction = decimal;
       }
 
       result += decimal;
-    } else {
-      assertIsRomanSubtractable(roman);
-
-      // It's a subtract action so the value must be the maximum/10 or maximum/5
-      if (decimal * 10 !== max && decimal * 5 !== max) {
-        invalidValueError();
-      }
-
-      // We can only subtract one value
-      if (previousAction < 1) {
-        invalidValueError();
-      }
-
-      if (previousSubtractions.indexOf(decimal) > -1) {
-        invalidValueError();
-      }
-
-      result -= decimal;
-      previousAction = decimal * -1;
-      previousSubtractions.push(decimal);
     }
 
     previousValue = decimal;
