@@ -12,6 +12,7 @@ const NUMBER_TO_ROMAN = {
 };
 const ROMAN_TO_DECIMAL = reverseMap(NUMBER_TO_ROMAN);
 const DECIMAL_NUMBERS = [1, 5, 10, 50, 100, 500, 1000];
+const SUBTRACTABLE_ROMANS = ['I', 'X', 'C'];
 
 function reverseMap(map) {
   var reversedMap = {};
@@ -57,11 +58,18 @@ function fromNumberToRoman(value) {
   return result;
 }
 
+function assertIsRomanSubtractable(roman) {
+  if (SUBTRACTABLE_ROMANS.indexOf(roman) === -1) {
+    throw new Error('invalid value');
+  }
+}
+
 function fromRomanToNumber(value) {
   const romans = value.split('').reverse();
   var result = 0;
   var max = 0;
   var decimal;
+  var previousAction = 0;
 
   romans.forEach((roman) => {
     decimal = Number(ROMAN_TO_DECIMAL[roman]);
@@ -71,9 +79,17 @@ function fromRomanToNumber(value) {
 
     max = Math.max(max, decimal);
     if (decimal < max) {
+      assertIsRomanSubtractable(roman);
+      // We can only subtract one value
+      if (previousAction < 1) {
+        throw new Error('invalid value');
+      }
+
       result -= decimal;
+      previousAction = decimal * -1;
     } else {
       result += decimal;
+      previousAction = decimal;
     }
   });
 
