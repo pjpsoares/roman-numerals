@@ -75,6 +75,9 @@ describe('Roman Number', () => {
   assertInvalidValueError('error');
   assertInvalidValueError('XIIX');
   assertInvalidValueError('VX');
+  assertInvalidValueError('IC');
+  assertInvalidValueError('IM');
+  assertInvalidValueError('IL');
 
   assertValueConversion(1, 'I');
   assertValueConversion(3, 'III');

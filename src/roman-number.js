@@ -77,6 +77,15 @@ function fromRomanToNumber(value) {
       throw new Error('invalid value');
     }
 
+    // The value must be the maximum or it has to be the maximum/10 or maximum/5
+    if (decimal >= max) {
+      max = decimal;
+    } else {
+      if (decimal * 10 !== max && decimal * 5 !== max) {
+        throw new Error('invalid value');
+      }
+    }
+
     max = Math.max(max, decimal);
     if (decimal < max) {
       assertIsRomanSubtractable(roman);
