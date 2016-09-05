@@ -19,6 +19,15 @@ function assertInvalidRangeError(value) {
   });
 }
 
+function assertInvalidValueError(value) {
+  describe(`when we instantiate with ${value}`, () => {
+    it('should throw an invalid value error', () => {
+      expect(() => { new RomanNumber(value); })
+        .to.throw('invalid value');
+    });
+  });
+}
+
 function assertValueConversion(numericValue, romanValue) {
   describe(`when we instantiate with ${numericValue}`, () => {
     var romanNumberInstance;
@@ -61,6 +70,10 @@ describe('Roman Number', () => {
   assertInvalidRangeError(4000);
   assertInvalidRangeError(10000);
 
+  assertInvalidValueError('1473');
+  assertInvalidValueError('CD1X');
+  assertInvalidValueError('error');
+
   assertValueConversion(1, 'I');
   assertValueConversion(3, 'III');
   assertValueConversion(4, 'IV');
@@ -70,6 +83,8 @@ describe('Roman Number', () => {
   assertValueConversion(10, 'X');
   assertValueConversion(14, 'XIV');
   assertValueConversion(19, 'XIX');
+  assertValueConversion(1482, 'MCDLXXXII');
+  assertValueConversion(1980, 'MCMLXXX');
   assertValueConversion(1968, 'MCMLXVIII');
   assertValueConversion(2999, 'MMCMXCIX');
   assertValueConversion(3000, 'MMM');

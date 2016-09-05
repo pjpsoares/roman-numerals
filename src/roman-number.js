@@ -65,8 +65,11 @@ function fromRomanToNumber(value) {
 
   romans.forEach((roman) => {
     decimal = Number(ROMAN_TO_DECIMAL[roman]);
-    max = Math.max(max, decimal);
+    if (isNaN(decimal)) {
+      throw new Error('invalid value');
+    }
 
+    max = Math.max(max, decimal);
     if (decimal < max) {
       result -= decimal;
     } else {
