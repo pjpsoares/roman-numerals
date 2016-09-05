@@ -31,7 +31,7 @@ function fromNumberToRomanAux(digit, one, five, ten) {
   } else if (digit === 4 ) {
     return one + five;
   } else if (digit <= 8){
-    return five + fromNumberToRomanAux(digit - 5, one, five, ten);
+    return five + one.repeat(digit - 5);
   } else {
     return one + ten;
   }
@@ -41,16 +41,18 @@ function fromNumberToRoman(value) {
   const digits = String(value).split('').reverse();
   var result = '';
 
-  for (var i = 0; i < digits.length; i++) {
+  digits.forEach((digit, i) => {
+    digit = Number(digit);
+
     // We get the index * 2 of the array so we jump the 5/50/500, then we fetch the +1 and +2.
     // The next 5 value and the next 10 value.
     result = fromNumberToRomanAux(
-      Number(digits[i]),
+      digit,
       NUMBER_TO_ROMAN[DECIMAL_NUMBERS[i * 2]],
       NUMBER_TO_ROMAN[DECIMAL_NUMBERS[i * 2 + 1]],
       NUMBER_TO_ROMAN[DECIMAL_NUMBERS[i * 2 + 2]]
     ) +  result;
-  }
+  });
 
   return result;
 }
