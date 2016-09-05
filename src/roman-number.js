@@ -70,6 +70,7 @@ function fromRomanToNumber(value) {
   var max = 0;
   var decimal;
   var previousAction = 0;
+  var previousValue;
 
   romans.forEach((roman) => {
     decimal = Number(ROMAN_TO_DECIMAL[roman]);
@@ -77,18 +78,33 @@ function fromRomanToNumber(value) {
       throw new Error('invalid value');
     }
 
-    // The value must be the maximum or it has to be the maximum/10 or maximum/5
     if (decimal >= max) {
       max = decimal;
+
+      if (previousValue === decimal) {
+        // We can only have one five
+        if (String(decimal).charAt(0) === '5') {
+          throw new Error('invalid value');
+        }
+        // We can only have 3 of the same value for 1/10/100/1000
+        if (previousAction === 3 * decimal) {
+          throw new Error('invalid value');
+        }
+
+        previousAction += decimal;
+      } else {
+        previousAction = decimal;
+      }
+
+      result += decimal;
     } else {
+      assertIsRomanSubtractable(roman);
+
+      // It's a subtract action so the value must be the maximum/10 or maximum/5
       if (decimal * 10 !== max && decimal * 5 !== max) {
         throw new Error('invalid value');
       }
-    }
 
-    max = Math.max(max, decimal);
-    if (decimal < max) {
-      assertIsRomanSubtractable(roman);
       // We can only subtract one value
       if (previousAction < 1) {
         throw new Error('invalid value');
@@ -96,10 +112,9 @@ function fromRomanToNumber(value) {
 
       result -= decimal;
       previousAction = decimal * -1;
-    } else {
-      result += decimal;
-      previousAction = decimal;
     }
+
+    previousValue = decimal;
   });
 
   return result;
