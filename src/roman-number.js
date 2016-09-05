@@ -1,7 +1,7 @@
 const MIN_RANGE = 1;
 const MAX_RANGE = 3999;
 
-const ROMAN_NUMBERS = {
+const NUMBER_TO_ROMAN = {
   1: 'I',
   5: 'V',
   10: 'X',
@@ -10,7 +10,18 @@ const ROMAN_NUMBERS = {
   500: 'D',
   1000: 'M'
 };
+const ROMAN_TO_DECIMAL = reverseMap(NUMBER_TO_ROMAN);
 const DECIMAL_NUMBERS = [1, 5, 10, 50, 100, 500, 1000];
+
+function reverseMap(map) {
+  var reversedMap = {};
+
+  for (var key in map) {
+    reversedMap[map[key]] = key;
+  }
+
+  return reversedMap;
+}
 
 function fromNumberToRomanAux(digit, one, five, ten) {
   if (digit < one) {
@@ -35,11 +46,31 @@ function fromNumberToRoman(value) {
     // The next 5 value and the next 10 value.
     result = fromNumberToRomanAux(
       Number(digits[i]),
-      ROMAN_NUMBERS[DECIMAL_NUMBERS[i * 2]],
-      ROMAN_NUMBERS[DECIMAL_NUMBERS[i * 2 + 1]],
-      ROMAN_NUMBERS[DECIMAL_NUMBERS[i * 2 + 2]]
+      NUMBER_TO_ROMAN[DECIMAL_NUMBERS[i * 2]],
+      NUMBER_TO_ROMAN[DECIMAL_NUMBERS[i * 2 + 1]],
+      NUMBER_TO_ROMAN[DECIMAL_NUMBERS[i * 2 + 2]]
     ) +  result;
   }
+
+  return result;
+}
+
+function fromRomanToNumber(value) {
+  const romans = value.split('').reverse();
+  var result = 0;
+  var max = 0;
+  var decimal;
+
+  romans.forEach((roman) => {
+    decimal = Number(ROMAN_TO_DECIMAL[roman]);
+    max = Math.max(max, decimal);
+
+    if (decimal < max) {
+      result -= decimal;
+    } else {
+      result += decimal;
+    }
+  });
 
   return result;
 }
@@ -56,6 +87,9 @@ function RomanNumber(value) {
 
     this.numeric = value;
     this.roman = fromNumberToRoman(value);
+  } else {
+    this.roman = value;
+    this.numeric = fromRomanToNumber(value);
   }
 }
 

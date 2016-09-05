@@ -21,17 +21,32 @@ function assertInvalidRangeError(value) {
 
 function assertValueConversion(numericValue, romanValue) {
   describe(`when we instantiate with ${numericValue}`, () => {
-    var romanNumberInstnace;
+    var romanNumberInstance;
     beforeEach(() => {
-      romanNumberInstnace = new RomanNumber(numericValue);
+      romanNumberInstance = new RomanNumber(numericValue);
     });
 
     it(`should return the toInt as ${numericValue}`, () => {
-      expect(romanNumberInstnace.toInt()).to.equal(numericValue);
+      expect(romanNumberInstance.toInt()).to.equal(numericValue);
     });
 
     it(`should return the toString as ${romanValue}`, () => {
-      expect(romanNumberInstnace.toString()).to.equal(romanValue);
+      expect(romanNumberInstance.toString()).to.equal(romanValue);
+    });
+  });
+
+  describe(`when we instantiate with ${romanValue}`, () => {
+    var romanNumberInstance;
+    beforeEach(() => {
+      romanNumberInstance = new RomanNumber(romanValue);
+    });
+
+    it(`should return the toInt as ${numericValue}`, () => {
+      expect(romanNumberInstance.toInt()).to.equal(numericValue);
+    });
+
+    it(`should return the toString as ${romanValue}`, () => {
+      expect(romanNumberInstance.toString()).to.equal(romanValue);
     });
   });
 }
@@ -59,5 +74,4 @@ describe('Roman Number', () => {
   assertValueConversion(2999, 'MMCMXCIX');
   assertValueConversion(3000, 'MMM');
   assertValueConversion(3999, 'MMMCMXCIX');
-
 });
