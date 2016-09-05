@@ -37,5 +37,8 @@ There are 3 custom errors thrown:
 * value required - a value needs to be passed when creating a new instance. null, undefined or '' are not valid values.
 * invalid value - there was an error trying to parse the roman literal. Please review it.
 
-#Project start
+# Project timestamps
+## Begin
 Mon Sep 05 2016 19:06:19 GMT+0100 (WEST)
+## End
+Mon Sep 05 2016 23:14:47 GMT+0100 (WEST)
