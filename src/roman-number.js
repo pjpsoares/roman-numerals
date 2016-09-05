@@ -140,6 +140,10 @@ function fromRomanToNumber(value) {
 }
 
 function RomanNumber(value) {
+  if (!(this instanceof RomanNumber)) {
+    return new RomanNumber(value);
+  }
+
   if (value === undefined || value === null || value === '') {
     valueRequiredError();
   }

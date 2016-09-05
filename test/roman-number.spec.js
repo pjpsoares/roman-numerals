@@ -1,35 +1,41 @@
 const RomanNumber = require('../src/roman-number');
 const expect = require('chai').expect;
 
-function assertValueRequiredError(value) {
+function assertInvocationWithNewThrowError(value, error) {
   describe(`when we instantiate with ${value}`, () => {
     it('should throw a value required error', () => {
       expect(() => { new RomanNumber(value); })
-        .to.throw('value required');
+        .to.throw(error);
     });
   });
+}
+
+function assertInvocationWithoutNewThrowError(value, error) {
+  describe(`when we instantiate with ${value}`, () => {
+    it('should throw a value required error', () => {
+      expect(() => { new RomanNumber(value); })
+        .to.throw(error);
+    });
+  });
+}
+
+function assertValueRequiredError(value) {
+  assertInvocationWithNewThrowError(value, 'value required');
+  assertInvocationWithoutNewThrowError(value, 'value required');
 }
 
 function assertInvalidRangeError(value) {
-  describe(`when we instantiate with ${value}`, () => {
-    it('should throw an invalid range error', () => {
-      expect(() => { new RomanNumber(value); })
-        .to.throw('invalid range');
-    });
-  });
+  assertInvocationWithNewThrowError(value, 'invalid range');
+  assertInvocationWithoutNewThrowError(value, 'invalid range');
 }
 
 function assertInvalidValueError(value) {
-  describe(`when we instantiate with ${value}`, () => {
-    it('should throw an invalid value error', () => {
-      expect(() => { new RomanNumber(value); })
-        .to.throw('invalid value');
-    });
-  });
+  assertInvocationWithNewThrowError(value, 'invalid value');
+  assertInvocationWithoutNewThrowError(value, 'invalid value');
 }
 
 function assertValueConversion(numericValue, romanValue) {
-  describe(`when we instantiate with ${numericValue}`, () => {
+  describe(`when we instantiate with ${numericValue} using new`, () => {
     var romanNumberInstance;
     beforeEach(() => {
       romanNumberInstance = new RomanNumber(numericValue);
@@ -44,7 +50,37 @@ function assertValueConversion(numericValue, romanValue) {
     });
   });
 
-  describe(`when we instantiate with ${romanValue}`, () => {
+  describe(`when we instantiate with ${romanValue} using new`, () => {
+    var romanNumberInstance;
+    beforeEach(() => {
+      romanNumberInstance = new RomanNumber(romanValue);
+    });
+
+    it(`should return the toInt as ${numericValue}`, () => {
+      expect(romanNumberInstance.toInt()).to.equal(numericValue);
+    });
+
+    it(`should return the toString as ${romanValue}`, () => {
+      expect(romanNumberInstance.toString()).to.equal(romanValue);
+    });
+  });
+
+  describe(`when we instantiate with ${numericValue} not using new`, () => {
+    var romanNumberInstance;
+    beforeEach(() => {
+      romanNumberInstance = RomanNumber(numericValue);
+    });
+
+    it(`should return the toInt as ${numericValue}`, () => {
+      expect(romanNumberInstance.toInt()).to.equal(numericValue);
+    });
+
+    it(`should return the toString as ${romanValue}`, () => {
+      expect(romanNumberInstance.toString()).to.equal(romanValue);
+    });
+  });
+
+  describe(`when we instantiate with ${romanValue} not using new`, () => {
     var romanNumberInstance;
     beforeEach(() => {
       romanNumberInstance = new RomanNumber(romanValue);
