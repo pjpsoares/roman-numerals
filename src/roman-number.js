@@ -28,6 +28,14 @@ function invalidValueError() {
   throw new Error('invalid value');
 }
 
+function valueRequiredError() {
+  throw new Error('value required');
+}
+
+function invalidRangeError() {
+  throw new Error('invalid range');
+}
+
 function fromNumberToRomanAux(digit, one, five, ten) {
   if (digit < one) {
     return '';
@@ -132,12 +140,12 @@ function fromRomanToNumber(value) {
 
 function RomanNumber(value) {
   if (value === undefined || value === null || value === '') {
-    throw new Error('value required');
+    valueRequiredError();
   }
 
   if (Number.isInteger(value)) {
     if (value < MIN_RANGE || value > MAX_RANGE) {
-      throw new Error('invalid range');
+      invalidRangeError();
     }
 
     this.numeric = value;
