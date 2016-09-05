@@ -69,8 +69,9 @@ function fromRomanToNumber(value) {
   var result = 0;
   var max = 0;
   var decimal;
-  var previousAction = 0;
+  var previousAction;
   var previousValue;
+  var previousSubtractions = [];
 
   romans.forEach((roman) => {
     decimal = Number(ROMAN_TO_DECIMAL[roman]);
@@ -110,8 +111,13 @@ function fromRomanToNumber(value) {
         throw new Error('invalid value');
       }
 
+      if (previousSubtractions.indexOf(decimal) > -1) {
+        throw new Error('invalid value');
+      }
+
       result -= decimal;
       previousAction = decimal * -1;
+      previousSubtractions.push(decimal);
     }
 
     previousValue = decimal;
