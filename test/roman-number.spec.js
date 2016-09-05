@@ -51,4 +51,13 @@ describe('Roman Number', () => {
   assertValueConversion(4, 'IV');
   assertValueConversion(5, 'V');
   assertValueConversion(8, 'VIII');
+  assertValueConversion(9, 'IX');
+  assertValueConversion(10, 'X');
+  assertValueConversion(14, 'XIV');
+  assertValueConversion(19, 'XIX');
+  assertValueConversion(1968, 'MCMLXVIII');
+  assertValueConversion(2999, 'MMCMXCIX');
+  assertValueConversion(3000, 'MMM');
+  assertValueConversion(3999, 'MMMCMXCIX');
+
 });

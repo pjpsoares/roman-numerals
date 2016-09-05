@@ -12,7 +12,7 @@ const ROMAN_NUMBERS = {
 };
 const DECIMAL_NUMBERS = [1, 5, 10, 50, 100, 500, 1000];
 
-function aux(digit, one, five, ten) {
+function fromNumberToRomanAux(digit, one, five, ten) {
   if (digit < one) {
     return '';
   } else if (digit <= 3) {
@@ -20,7 +20,7 @@ function aux(digit, one, five, ten) {
   } else if (digit === 4 ) {
     return one + five;
   } else if (digit <= 8){
-    return five + aux(digit - 5, one, five, ten);
+    return five + fromNumberToRomanAux(digit - 5, one, five, ten);
   } else {
     return one + ten;
   }
@@ -31,12 +31,14 @@ function fromNumberToRoman(value) {
   var result = '';
 
   for (var i = 0; i < digits.length; i++) {
-    result += aux(
+    // We get the index * 2 of the array so we jump the 5/50/500, then we fetch the +1 and +2.
+    // The next 5 value and the next 10 value.
+    result = fromNumberToRomanAux(
       Number(digits[i]),
-      ROMAN_NUMBERS[DECIMAL_NUMBERS[i]],
-      ROMAN_NUMBERS[DECIMAL_NUMBERS[i + 1]],
-      ROMAN_NUMBERS[DECIMAL_NUMBERS[i + 2]]
-    );
+      ROMAN_NUMBERS[DECIMAL_NUMBERS[i * 2]],
+      ROMAN_NUMBERS[DECIMAL_NUMBERS[i * 2 + 1]],
+      ROMAN_NUMBERS[DECIMAL_NUMBERS[i * 2 + 2]]
+    ) +  result;
   }
 
   return result;
