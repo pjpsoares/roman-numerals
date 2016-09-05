@@ -24,6 +24,10 @@ function reverseMap(map) {
   return reversedMap;
 }
 
+function invalidValueError() {
+  throw new Error('invalid value');
+}
+
 function fromNumberToRomanAux(digit, one, five, ten) {
   if (digit < one) {
     return '';
@@ -60,7 +64,7 @@ function fromNumberToRoman(value) {
 
 function assertIsRomanSubtractable(roman) {
   if (SUBTRACTABLE_ROMANS.indexOf(roman) === -1) {
-    throw new Error('invalid value');
+    invalidValueError();
   }
 }
 
@@ -76,7 +80,7 @@ function fromRomanToNumber(value) {
   romans.forEach((roman) => {
     decimal = Number(ROMAN_TO_DECIMAL[roman]);
     if (isNaN(decimal)) {
-      throw new Error('invalid value');
+      invalidValueError();
     }
 
     if (decimal >= max) {
@@ -85,11 +89,11 @@ function fromRomanToNumber(value) {
       if (previousValue === decimal) {
         // We can only have one five
         if (String(decimal).charAt(0) === '5') {
-          throw new Error('invalid value');
+          invalidValueError();
         }
         // We can only have 3 of the same value for 1/10/100/1000
         if (previousAction === 3 * decimal) {
-          throw new Error('invalid value');
+          invalidValueError();
         }
 
         previousAction += decimal;
@@ -103,16 +107,16 @@ function fromRomanToNumber(value) {
 
       // It's a subtract action so the value must be the maximum/10 or maximum/5
       if (decimal * 10 !== max && decimal * 5 !== max) {
-        throw new Error('invalid value');
+        invalidValueError();
       }
 
       // We can only subtract one value
       if (previousAction < 1) {
-        throw new Error('invalid value');
+        invalidValueError();
       }
 
       if (previousSubtractions.indexOf(decimal) > -1) {
-        throw new Error('invalid value');
+        invalidValueError();
       }
 
       result -= decimal;
