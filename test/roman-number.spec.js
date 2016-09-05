@@ -19,12 +19,34 @@ function assertInvalidRangeError(value) {
   });
 }
 
+function assertValueConversion(numericValue, romanValue) {
+  describe(`when we instantiate with ${numericValue}`, () => {
+    var romanNumberInstnace;
+    beforeEach(() => {
+      romanNumberInstnace = new RomanNumber(numericValue);
+    });
+
+    it(`should return the toInt as ${numericValue}`, () => {
+      expect(romanNumberInstnace.toInt()).to.equal(numericValue);
+    });
+
+    it(`should return the toString as ${romanValue}`, () => {
+      expect(romanNumberInstnace.toString()).to.equal(romanValue);
+    });
+  });
+}
+
 describe('Roman Number', () => {
 
   assertValueRequiredError(null);
   assertValueRequiredError();
   assertValueRequiredError('');
+
   assertInvalidRangeError(0);
   assertInvalidRangeError(4000);
   assertInvalidRangeError(10000);
+
+  assertValueConversion(1, 'I');
+  assertValueConversion(3, 'III');
+
 });
