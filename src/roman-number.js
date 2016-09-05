@@ -1,17 +1,45 @@
 const MIN_RANGE = 1;
 const MAX_RANGE = 3999;
 
-const ROMAN_1 = 'I';
-const ROMAN_5 = 'V';
+const ROMAN_NUMBERS = {
+  1: 'I',
+  5: 'V',
+  10: 'X',
+  50: 'L',
+  100: 'C',
+  500: 'D',
+  1000: 'M'
+};
+const DECIMAL_NUMBERS = [1, 5, 10, 50, 100, 500, 1000];
+
+function aux(digit, one, five, ten) {
+  if (digit < one) {
+    return '';
+  } else if (digit <= 3) {
+    return one.repeat(digit);
+  } else if (digit === 4 ) {
+    return one + five;
+  } else if (digit <= 8){
+    return five + aux(digit - 5, one, five, ten);
+  } else {
+    return one + ten;
+  }
+}
 
 function fromNumberToRoman(value) {
-  if (value <= 3) {
-    return ROMAN_1.repeat(value);
-  } else if (value === 4 ) {
-    return ROMAN_1 + ROMAN_5;
-  } else if (value <= 8){
-    return ROMAN_5 + fromNumberToRoman(value - 5);
+  const digits = String(value).split('').reverse();
+  var result = '';
+
+  for (var i = 0; i < digits.length; i++) {
+    result += aux(
+      Number(digits[i]),
+      ROMAN_NUMBERS[DECIMAL_NUMBERS[i]],
+      ROMAN_NUMBERS[DECIMAL_NUMBERS[i + 1]],
+      ROMAN_NUMBERS[DECIMAL_NUMBERS[i + 2]]
+    );
   }
+
+  return result;
 }
 
 function RomanNumber(value) {
